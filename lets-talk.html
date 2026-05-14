@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Let's Talk — 99 DOTS Atelier</title>
+<link rel="icon" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Julius+Sans+One&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--dark:#271a15;--bronze:#b87c55;--bronzeL:#c9956a;--pale:rgba(184,124,85,.1);--ease:cubic-bezier(.16,1,.3,1);}
+html,body{width:100%;min-height:100%;font-family:'Manrope',sans-serif;background:#faf9f7;color:var(--dark);overflow-x:hidden;}
+
+/* HEADER */
+header{position:sticky;top:0;z-index:200;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;background:rgba(250,249,247,.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(39,26,21,.07);}
+.logo{text-decoration:none;display:flex;flex-direction:column;gap:2px;}
+.logo-name{font-family:'Times New Roman',serif;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--dark);}
+.logo-sub{font-size:7px;letter-spacing:.34em;text-transform:uppercase;color:var(--bronze);font-weight:600;}
+.hdr-r{display:flex;align-items:center;gap:16px;}
+.back-l{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(39,26,21,.4);text-decoration:none;}
+.lsw{display:flex;gap:4px;align-items:center;}
+.lb{font-size:9px;letter-spacing:.15em;font-family:'Manrope',sans-serif;background:none;border:none;cursor:pointer;color:rgba(39,26,21,.3);font-weight:500;padding:3px;}
+.lb.on{color:var(--dark);font-weight:700;}
+.ld{font-size:8px;color:rgba(39,26,21,.12);}
+
+/* PAGE */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.page{max-width:640px;margin:0 auto;padding:0 32px 48px;}
+.right{padding:40px 0 20px;}
+
+/* TITLE */
+.f-kicker{font-size:9px;letter-spacing:.26em;text-transform:uppercase;color:var(--bronze);font-weight:600;margin-bottom:8px;display:block;animation:fadeUp .5s var(--ease) .05s both;opacity:0;}
+.f-title{font-family:'Julius Sans One',serif;font-size:clamp(28px,5vw,48px);letter-spacing:.04em;text-transform:uppercase;line-height:1;margin-bottom:36px;animation:fadeUp .55s var(--ease) .1s both;opacity:0;}
+
+/* SECTION */
+.sec{display:flex;align-items:center;gap:12px;margin:40px 0 24px;opacity:0;transition:opacity .5s,transform .5s;transform:translateY(8px);}
+.sec.vis{opacity:1;transform:translateY(0);}
+.sec::after{content:'';flex:1;height:1px;background:rgba(39,26,21,.08);}
+.sec-n{width:22px;height:22px;border:1px solid var(--bronze);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:var(--bronze);flex-shrink:0;}
+.sec-name{font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;white-space:nowrap;}
+
+/* FIELDS */
+.f{margin-bottom:24px;opacity:0;transition:opacity .4s,transform .4s;transform:translateY(6px);}
+.f.vis{opacity:1;transform:translateY(0);}
+.f label{display:block;font-size:12px;font-weight:600;color:rgba(39,26,21,.7);margin-bottom:8px;}
+.f input,.f textarea{
+  display:block;width:100%;background:none;border:none;
+  border-bottom:1px solid rgba(39,26,21,.15);
+  font-family:'Manrope',sans-serif;font-size:14px;font-weight:400;
+  color:var(--dark);-webkit-text-fill-color:var(--dark);
+  padding:8px 0;outline:none;transition:border-color .2s;
+  -webkit-appearance:none;border-radius:0;
+}
+.f input:focus,.f textarea:focus{border-bottom-color:var(--bronze);}
+.f input::placeholder,.f textarea::placeholder{
+  font-size:13px;font-weight:300;
+  color:rgba(39,26,21,.28);-webkit-text-fill-color:rgba(39,26,21,.28);
+}
+.f textarea{resize:none;height:90px;line-height:1.7;}
+.ferr{font-size:9px;color:#c0392b;margin-top:4px;display:none;}
+
+/* LANGUAGE CHIPS */
+.rrow{display:flex;gap:8px;margin-top:6px;}
+.rchip{padding:7px 16px;font-size:9px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;border:1px solid rgba(39,26,21,.15);background:#faf9f7;color:rgba(39,26,21,.4);cursor:pointer;transition:all .2s;user-select:none;}
+.rchip.on{background:var(--bronze);border-color:var(--bronze);color:#fff;}
+
+/* DROPDOWN */
+.dw{position:relative;z-index:10;}
+.dw.oz{z-index:100;}
+.dtog{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(39,26,21,.15);font-family:'Manrope',sans-serif;font-size:13px;font-weight:300;color:rgba(39,26,21,.3);padding:8px 0;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;outline:none;transition:border-color .2s;}
+.dtog.has{color:var(--dark);-webkit-text-fill-color:var(--dark);font-weight:400;}
+.dtog.open{border-bottom-color:var(--bronze);}
+.darr{font-size:10px;color:var(--bronze);transition:transform .2s;margin-left:6px;flex-shrink:0;}
+.dtog.open .darr{transform:rotate(180deg);}
+.dmenu{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid rgba(39,26,21,.1);z-index:200;box-shadow:0 8px 24px rgba(39,26,21,.1);}
+.dmenu.open{display:block;animation:fadeDown .18s var(--ease);}
+.di{padding:10px 14px;font-size:13px;font-weight:300;cursor:pointer;color:var(--dark);transition:background .12s;}
+.di:hover,.di.on{background:var(--pale);color:var(--bronze);}
+
+/* SUBMIT */
+.btn-s{width:100%;padding:18px;background:var(--dark);border:none;color:#fff;font-family:'Manrope',sans-serif;font-size:9px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;cursor:pointer;margin-top:8px;transition:background .3s,letter-spacing .25s;position:relative;overflow:hidden;}
+.btn-s::after{content:'';position:absolute;inset:0;background:var(--bronze);transform:translateX(-101%);transition:transform .4s var(--ease);}
+.btn-s span{position:relative;z-index:1;}
+.btn-s:hover{letter-spacing:.38em;}
+.btn-s:hover::after{transform:translateX(0);}
+.btn-s:disabled{opacity:.4;cursor:not-allowed;}
+
+/* SUCCESS */
+.succ{position:fixed;inset:0;background:#fff;z-index:500;display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center;}
+.succ.show{display:flex;animation:fadeUp .4s var(--ease);}
+.succ-close{position:absolute;top:22px;right:28px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(39,26,21,.4);cursor:pointer;border:none;background:none;font-family:'Manrope',sans-serif;}
+.succ-close:hover{color:var(--dark);}
+.succ-dot{width:10px;height:10px;background:var(--bronze);border-radius:50%;margin:0 auto 24px;}
+.succ-k{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--bronze);font-weight:600;margin-bottom:14px;}
+.succ-t{font-family:'Julius Sans One',serif;font-size:clamp(22px,4vw,42px);letter-spacing:.05em;text-transform:uppercase;margin-bottom:20px;}
+.succ-p{font-size:12px;font-weight:300;color:rgba(39,26,21,.5);line-height:1.9;max-width:400px;margin-bottom:6px;}
+.succ-back{display:inline-block;margin-top:28px;font-size:9px;letter-spacing:.26em;text-transform:uppercase;text-decoration:none;color:var(--dark);border-bottom:1px solid var(--bronze);padding-bottom:2px;}
+
+/* MOBILE */
+@media(max-width:600px){
+  header,.page{padding-left:20px;padding-right:20px;}
+  .f label{font-size:13px;}
+  .f input,.f textarea{font-size:16px;color:#000;-webkit-text-fill-color:#000;}
+  .f input::placeholder,.f textarea::placeholder{font-size:11px;color:rgba(39,26,21,.28);-webkit-text-fill-color:rgba(39,26,21,.28);}
+  .dtog{font-size:16px;}
+  .dtog:not(.has){font-size:11px;}
+  .di{font-size:14px;padding:11px 14px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="/"><span class="logo-name">99 DOTS</span><span class="logo-sub">Atelier Design</span></a>
+  <div class="hdr-r">
+    <div class="lsw">
+      <button class="lb on" id="lg-es" onclick="sl('es')">ES</button><span class="ld">·</span>
+      <button class="lb" id="lg-en" onclick="sl('en')">EN</button><span class="ld">·</span>
+      <button class="lb" id="lg-fr" onclick="sl('fr')">FR</button>
+    </div>
+    <a class="back-l" href="/" id="aback">← Inicio</a>
+  </div>
+</header>
+
+<!-- Success -->
+<div class="succ" id="succOv">
+  <button class="succ-close" id="sClose" onclick="closeSucc()">✕ Cerrar</button>
+  <div class="succ-dot"></div>
+  <p class="succ-k" id="sk"></p>
+  <h2 class="succ-t" id="stl"></h2>
+  <p class="succ-p" id="s1"></p>
+  <p class="succ-p" id="s2"></p>
+  <a class="succ-back" href="/" id="sbk"></a>
+</div>
+
+<div class="page">
+<main class="right">
+  <span class="f-kicker" id="fKicker">Contact</span>
+  <h1 class="f-title" id="mainTitle">LET'S TALK</h1>
+
+  <!-- 01 Contact -->
+  <div class="sec vis" id="secH0"><span class="sec-n">01</span><span class="sec-name" id="sec0">Contact Information</span></div>
+  <div class="f vis"><label id="le">Email *</label><input type="email" id="ltEmail" autocomplete="email"><div class="ferr" id="ee"></div></div>
+  <div class="f vis"><label id="lco">Company / Brand</label><input type="text" id="ltCompany" autocomplete="organization"></div>
+  <div class="f vis dw" id="svcDw">
+    <label id="lsvc">What can we help you with?</label>
+    <button type="button" class="dtog" id="svcTog" onclick="toggleDrop('svcM','svcTog','svcDw')">
+      <span id="svcLbl">Select service</span><span class="darr">↓</span>
+    </button>
+    <div class="dmenu" id="svcM"></div>
+    <input type="hidden" id="ltService">
+  </div>
+
+  <!-- 02 Message -->
+  <div class="sec" id="secH1"><span class="sec-n">02</span><span class="sec-name" id="sec1">Your Message</span></div>
+  <div class="f"><label id="lmsg">Message *</label><textarea id="ltMessage"></textarea><div class="ferr" id="emsg"></div></div>
+
+  <!-- 03 Details -->
+  <div class="sec" id="secH2"><span class="sec-n">03</span><span class="sec-name" id="sec2">Final Details</span></div>
+  <div class="f">
+    <label id="llng">Preferred language to communicate</label>
+    <div class="rrow">
+      <div class="rchip on" id="rces" onclick="setLP('rces','Spanish')"><span id="rces-t">Spanish</span></div>
+      <div class="rchip" id="rcen" onclick="setLP('rcen','English')"><span id="rcen-t">English</span></div>
+    </div>
+  </div>
+  <div class="f"><label id="lo">Other Comments</label><textarea id="ltComments"></textarea></div>
+
+  <button class="btn-s" id="btnS" onclick="doSub()"><span id="btnT">SUBMIT</span></button>
+</main>
+</div>
+
+<script>
+let lp='Spanish',lang='en';
+
+const T={
+es:{bk:'← Inicio',kicker:'Contacto',title:"LET'S TALK",
+sec:['Información de Contacto','Tu Mensaje','Detalles Finales'],
+le:'Email *',lco:'Empresa / Marca',lsvc:'¿En qué podemos ayudarte?',lmsg:'Mensaje *',llng:'Idioma preferido',lo:'Otros Comentarios',
+pe:'tu@email.com',pco:'Opcional',pmsg:'Cuéntanos sobre tu proyecto, objetivos o ideas.',po:'¿Algo más?',
+sph:'Seleccionar servicio',
+svcs:['Branding','Identidad visual','Diseño web','Redes sociales','Producción de contenido','Fotografía','Vídeo','Otro'],
+pl:['Español','English'],
+sub:'ENVIAR',snd:'ENVIANDO...',close:'✕ Cerrar',
+sk:'Mensaje recibido',st:'MENSAJE RECIBIDO',s1:'Tu mensaje acaba de llegar al Atelier 99 DOTS.',s2:'Te responderemos pronto.',sbk:'← Volver al sitio',
+e:{e:'Email no válido',m:'Por favor escribe un mensaje'}},
+
+en:{bk:'← Back',kicker:'Contact',title:"LET'S TALK",
+sec:['Contact Information','Your Message','Final Details'],
+le:'Email *',lco:'Company / Brand',lsvc:'What can we help you with?',lmsg:'Message *',llng:'Preferred language to communicate',lo:'Other Comments',
+pe:'your@email.com',pco:'Optional',pmsg:'Tell us about your project, goals or ideas.',po:"Anything else?",
+sph:'Select service',
+svcs:['Branding','Visual identity','Web design','Social media','Content production','Photography','Video','Other'],
+pl:['Spanish','English'],
+sub:'SUBMIT',snd:'SENDING...',close:'✕ Close',
+sk:'Message received',st:'MESSAGE RECEIVED',s1:'Your message just landed in the 99 DOTS Atelier.',s2:"We'll get back to you soon.",sbk:'← Back to site',
+e:{e:'Please enter a valid email',m:'Please enter a message'}},
+
+fr:{bk:'← Retour',kicker:'Contact',title:'CONTACTEZ-NOUS',
+sec:['Coordonnées','Votre Message','Détails Finaux'],
+le:'Email *',lco:'Entreprise / Marque',lsvc:'Comment pouvons-nous vous aider ?',lmsg:'Message *',llng:'Langue préférée pour communiquer',lo:'Autres Commentaires',
+pe:'vous@email.com',pco:'Optionnel',pmsg:'Parlez-nous de votre projet, objectifs ou idées.',po:'Autre chose ?',
+sph:'Sélectionner un service',
+svcs:['Branding','Identité visuelle','Web design','Réseaux sociaux','Production de contenu','Photographie','Vidéo','Autre'],
+pl:['Espagnol','Anglais'],
+sub:'ENVOYER',snd:'ENVOI...',close:'✕ Fermer',
+sk:'Message reçu',st:'MESSAGE REÇU',s1:"Votre message vient d'arriver à l'Atelier 99 DOTS.",s2:'Nous vous répondrons bientôt.',sbk:'← Retour au site',
+e:{e:'Email invalide',m:'Veuillez écrire un message'}}
+};
+
+function dl(){const s=localStorage.getItem('99d_lang');if(s&&['es','en','fr'].includes(s))return s;const b=(navigator.language||'en').toLowerCase();if(b.startsWith('fr'))return'fr';if(b.startsWith('es'))return'es';return'en';}
+
+function sl(l){
+  lang=l;localStorage.setItem('99d_lang',l);document.documentElement.lang=l;
+  document.querySelectorAll('.lb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('lg-'+l).classList.add('on');
+  const t=T[l];
+  document.getElementById('aback').textContent=t.bk;
+  document.getElementById('fKicker').textContent=t.kicker;
+  document.getElementById('mainTitle').textContent=t.title;
+  t.sec.forEach((s,i)=>{const e=document.getElementById('sec'+i);if(e)e.textContent=s;});
+  document.getElementById('le').textContent=t.le;
+  document.getElementById('lco').textContent=t.lco;
+  document.getElementById('lsvc').textContent=t.lsvc;
+  document.getElementById('lmsg').textContent=t.lmsg;
+  document.getElementById('llng').textContent=t.llng;
+  document.getElementById('lo').textContent=t.lo;
+  document.getElementById('ltEmail').placeholder=t.pe;
+  document.getElementById('ltCompany').placeholder=t.pco;
+  document.getElementById('ltMessage').placeholder=t.pmsg;
+  document.getElementById('ltComments').placeholder=t.po;
+  document.getElementById('rces-t').textContent=t.pl[0];
+  document.getElementById('rcen-t').textContent=t.pl[1];
+  document.getElementById('btnT').textContent=t.sub;
+  document.getElementById('sk').textContent=t.sk;
+  document.getElementById('stl').textContent=t.st;
+  document.getElementById('s1').textContent=t.s1;
+  document.getElementById('s2').textContent=t.s2;
+  document.getElementById('sbk').textContent=t.sbk;
+  document.getElementById('sClose').textContent=t.close;
+  buildSvc();
+}
+
+function setLP(id,v){document.querySelectorAll('.rchip').forEach(r=>r.classList.remove('on'));document.getElementById(id).classList.add('on');lp=v;}
+
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.dw')){
+    document.querySelectorAll('.dmenu').forEach(m=>m.classList.remove('open'));
+    document.querySelectorAll('.dtog').forEach(t=>t.classList.remove('open'));
+    document.querySelectorAll('.dw').forEach(d=>d.classList.remove('oz'));
+  }
+});
+
+function toggleDrop(mid,tid,dwid){
+  const isOpen=document.getElementById(mid).classList.contains('open');
+  document.querySelectorAll('.dmenu').forEach(m=>m.classList.remove('open'));
+  document.querySelectorAll('.dtog').forEach(t=>t.classList.remove('open'));
+  document.querySelectorAll('.dw').forEach(d=>d.classList.remove('oz'));
+  if(!isOpen){
+    document.getElementById(mid).classList.add('open');
+    document.getElementById(tid).classList.add('open');
+    document.getElementById(dwid).classList.add('oz');
+  }
+}
+
+function buildSvc(){
+  const t=T[lang],m=document.getElementById('svcM');
+  const cur=document.getElementById('ltService').value;
+  m.innerHTML='';
+  t.svcs.forEach(v=>{
+    const d=document.createElement('div');d.className='di'+(cur===v?' on':'');
+    d.textContent=v;
+    d.onclick=()=>{
+      document.getElementById('ltService').value=v;
+      document.getElementById('svcLbl').textContent=v;
+      document.getElementById('svcTog').classList.add('has');
+      document.getElementById('svcM').classList.remove('open');
+      document.getElementById('svcTog').classList.remove('open');
+      document.getElementById('svcDw').classList.remove('oz');
+      m.querySelectorAll('.di').forEach(x=>x.classList.remove('on'));d.classList.add('on');
+    };
+    m.appendChild(d);
+  });
+  const cur2=document.getElementById('ltService').value;
+  document.getElementById('svcLbl').textContent=cur2||t.sph;
+  document.getElementById('svcTog').classList.toggle('has',!!cur2);
+}
+
+function vld(){
+  const t=T[lang];let ok=true;
+  function chk(v,id,msg){const e=document.getElementById(id);if(!v){e.textContent=msg;e.style.display='block';ok=false;}else e.style.display='none';}
+  chk(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('ltEmail').value),'ee',t.e.e);
+  chk(document.getElementById('ltMessage').value.trim(),'emsg',t.e.m);
+  if(!ok)document.querySelector('.ferr[style*="block"]')?.scrollIntoView({behavior:'smooth',block:'center'});
+  return ok;
+}
+
+function doSub(){
+  if(!vld())return;
+  const btn=document.getElementById('btnS'),t=T[lang];
+  document.getElementById('btnT').textContent=t.snd;btn.disabled=true;
+  fetch('https://formspree.io/f/maqpkvel',{
+    method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify({email:document.getElementById('ltEmail').value,company:document.getElementById('ltCompany').value||'—',service:document.getElementById('ltService').value||'—',preferred_language:lp,message:document.getElementById('ltMessage').value,comments:document.getElementById('ltComments').value||'—',timestamp:new Date().toISOString()})
+  })
+  .then(r=>{
+    if(r.ok){document.getElementById('succOv').classList.add('show');}
+    else{document.getElementById('btnT').textContent=t.sub;btn.disabled=false;alert('Something went wrong.');}
+  })
+  .catch(()=>{document.getElementById('btnT').textContent=T[lang].sub;btn.disabled=false;alert('Connection error.');});
+}
+
+function closeSucc(){document.getElementById('succOv').classList.remove('show');}
+
+const ro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');ro.unobserve(e.target);}});},{threshold:.1});
+document.querySelectorAll('.sec,.f').forEach(el=>{if(!el.classList.contains('vis'))ro.observe(el);});
+
+lang=dl();sl(lang);
+</script>
+</body>
+</html>
